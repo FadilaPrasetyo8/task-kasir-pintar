@@ -12,55 +12,37 @@
                                     d="M480 480V128a32 32 0 0 1 64 0v352h352a32 32 0 1 1 0 64H544v352a32 32 0 1 1-64 0V544H128a32 32 0 0 1 0-64z" />
                             </svg></span>Tambah Pengajuan</button>
                 </div>
-                <div class="card-body px-0 pt-0 pb-2">
-                    <div class="table-responsive p-0">
-                        <table class="table align-items-center mb-0">
+                <div class="card-body pb-2">
+                    <div class="table-responsive ">
+                        <table class="display" id="mytablestaff">
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Author</th>
+                                        id
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Nama Reimbursement
+                                    </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Function</th>
+                                        Tanggal Reimbursement
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Deskripsi
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Status
+                                    </th>
+
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        File
+                                    </th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Status</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Employed</th>
-                                    <th class="text-secondary opacity-7"></th>
+                                        Action
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div>
-                                                <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3"
-                                                    alt="user1">
-                                            </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">John Michael</h6>
-                                                <p class="text-xs text-secondary mb-0">john@creative-tim.com</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">Manager</p>
-                                        <p class="text-xs text-secondary mb-0">Organization</p>
-                                    </td>
-                                    <td class="align-middle text-center text-sm">
-                                        <span class="badge badge-sm bg-gradient-success">Online</span>
-                                    </td>
-                                    <td class="align-middle text-center">
-                                        <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                                    </td>
-                                    <td class="align-middle">
-                                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                            data-toggle="tooltip" data-original-title="Edit user">
-                                            Edit
-                                        </a>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -116,6 +98,71 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+            $('#mytablestaff').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('pengajuan-reimburse') }}",
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    }, {
+                        data: 'nama_reimbursement',
+                        name: 'nama_reimbursement'
+                    },
+                    {
+                        data: 'tanggal_reimbursement',
+                        name: 'tanggal_reimbursement'
+                    },
+                    {
+                        data: 'deskripsi',
+                        name: 'deskripsi'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        render: function(data, type, full, meta) {
+                            switch (data) {
+                                case 'pending':
+                                    return '<span class="text-white px-2 py-1 rounded bg-warning">Pending</span>';
+                                    break;
+                                case 'submit':
+                                    return '<span class="text-white px-2 py-1 rounded bg-info">Submited</span>';
+                                    break;
+                                case 'approved':
+                                    return '<span class="text-white px-2 py-1 rounded bg-success">Approved</span>';
+                                    break;
+                                case 'rejected':
+                                    return '<span class="text-white px-2 py-1 rounded bg-danger">Rejected</span>';
+                                    break;
+                                default:
+                                    return '<span class="text-white px-2 py-1 rounded bg-warning">Pending</span>';
+                                    break;
+                            }
+                        }
+                    },
+                    {
+                        data: 'file_path',
+                        name: 'file_path',
+                        render: function(data, type, full, meta) {
+                            var result = data ?
+                                '<div><a id="label_file" href="' +
+                                data +
+                                '" download>Download File</a></div>' :
+                                "";
+
+                            return result;
+                        }
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: true
+                    },
+                ]
+            });
+
+
             $('.btn-tambah-pengajuan').click(function() {
                 $('#tambahPengajuanModal').modal('show');
             });

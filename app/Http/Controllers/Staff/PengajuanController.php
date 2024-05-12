@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Staff;
 use App\Http\Controllers\Controller;
 use App\Models\Reimbursement;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\View\View as ViewView;
 
 class PengajuanController extends Controller
@@ -15,8 +16,19 @@ class PengajuanController extends Controller
             $this->middleware('auth');
     }
 
-    public function index(): ViewView
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $data = Reimbursement::get();
+            return Datatables::of($data)
+                ->addColumn('action', function ($row) {
+                    $actionBtn = '';
+
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
         return view('staff.pengajuan-reimburse');
     }
 

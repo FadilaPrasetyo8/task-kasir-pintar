@@ -13,7 +13,7 @@ class PengajuanReimbursementController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Reimbursement::latest()->get();
+            $data = Reimbursement::get();
             return Datatables::of($data)
                 ->addColumn('action', function ($row) {
                     $actionBtn = '';
