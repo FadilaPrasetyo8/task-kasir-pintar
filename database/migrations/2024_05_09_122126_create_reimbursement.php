@@ -13,8 +13,6 @@ return new class extends Migration
 {
     Schema::create('reimbursements', function (Blueprint $table) {
         $table->id();
-        $table->unsignedBigInteger('nip');
-        $table->foreign('nip')->references('id')->on('users');
         $table->date('tanggal_reimbursement')->nullable();
         $table->string('nama_reimbursement');
         $table->text('deskripsi');
