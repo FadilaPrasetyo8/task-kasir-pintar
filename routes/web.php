@@ -63,8 +63,7 @@ Route::middleware(['auth', 'rolecheck:direktur'])->group(function() {
     Route::post('/direktur/approve-pengajuan/approve', [App\Http\Controllers\Direktur\ApprovePengajuanController::class, 'approve'])->name('approve-pengajuan.approve');
 
     Route::get('/direktur/employee/', [App\Http\Controllers\Direktur\EmployeeController::class, 'index'])->name('employee.direktur');
-
-
+    Route::delete('/direktur/employee/{id}', [App\Http\Controllers\Direktur\EmployeeController::class, 'destroy'])->name('employee.destroy');
 });
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

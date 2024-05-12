@@ -80,6 +80,45 @@
                     }
                 ]
             });
+
+            $('#mytables').on('click', '.delete', function() {
+                var id = $(this).data('id');
+                console.log(id);
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: "Data yang dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "{{ url('/direktur/employee/') }}" + '/' + id,
+                            headers: {
+                                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                    "content"
+                                ),
+                            },
+                            success: function(data) {
+                                $('#mytables').DataTable().ajax.reload();
+                                Swal.fire(
+                                    'Terhapus!',
+                                    'Data berhasil dihapus.',
+                                    'success'
+                                )
+                            },
+                            error: function(data) {
+                                console.log('Error:', data);
+                            }
+                        });
+
+                    }
+                })
+            });
         });
     </script>
 @endsection
