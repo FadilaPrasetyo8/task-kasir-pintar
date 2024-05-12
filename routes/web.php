@@ -61,8 +61,11 @@ Route::middleware(['auth', 'rolecheck:finance'])->group(function() {
 Route::middleware(['auth', 'rolecheck:direktur'])->group(function() {
     Route::get('/direktur/approve-pengajuan/', [App\Http\Controllers\Direktur\ApprovePengajuanController::class, 'index'])->name('approve-pengajuan.direktur');
     Route::post('/direktur/approve-pengajuan/approve', [App\Http\Controllers\Direktur\ApprovePengajuanController::class, 'approve'])->name('approve-pengajuan.approve');
-
+    Route::post('/direktur/approve-pengajuan/reject', [App\Http\Controllers\Direktur\ApprovePengajuanController::class, 'reject'])->name('approve-pengajuan.reject');
     Route::get('/direktur/employee/', [App\Http\Controllers\Direktur\EmployeeController::class, 'index'])->name('employee.direktur');
+    Route::get('/direktur/employee/edit/{id}', [App\Http\Controllers\Direktur\EmployeeController::class, 'edit'])->name('employee.direktur.edit');
+    Route::post('/direktur/employee/update/{id}', [App\Http\Controllers\Direktur\EmployeeController::class, 'update'])->name('employee.direktur.update');
+    Route::post('/direktur/employee', [App\Http\Controllers\Direktur\EmployeeController::class, 'store'])->name('employee.store');
     Route::delete('/direktur/employee/{id}', [App\Http\Controllers\Direktur\EmployeeController::class, 'destroy'])->name('employee.destroy');
 });
 

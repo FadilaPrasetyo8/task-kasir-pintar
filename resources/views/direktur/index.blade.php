@@ -92,16 +92,64 @@
                     }
                 ]
             });
-        });
 
-        $(document).on('click', '.approve', function() {
-            var id = $(this).attr('id');
-            $.ajax({
-                ajax: "{{ route('approve-pengajuan.approve') }}",
-                success: function(data) {
-                    console.log('sukses')
-                }
+            $('#mytables').on('click', '.approve', function() {
+
+                var id = $(this).data('id');
+                console.log(id);
+                $.ajax({
+                    url: "{{ route('approve-pengajuan.approve') }}", // Perbaikan atribut 'ajax' menjadi 'url'
+                    method: 'POST',
+                    data: {
+                        id: id,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        try {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Data has been Approved',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(function() {
+                                $('#mytables').DataTable().ajax.reload();
+                            });
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+                });
             });
+
+            $('#mytables').on('click', '.reject', function() {
+                var id = $(this).data('id');
+                $.ajax({
+                    url: "{{ route('approve-pengajuan.reject') }}",
+                    method: 'POST',
+                    data: {
+                        id: id,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        try {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Data has been rejected',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(function() {
+                                $('#mytables').DataTable().ajax.reload();
+                            });
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+                });
+            });
+
+
         });
     </script>
 @endsection

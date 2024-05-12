@@ -31,8 +31,6 @@ class ApprovePengajuanController extends Controller
 }
 
 
-
-
     public function approve(Request $request){
         $reimbursement = Reimbursement::find($request->id);
 
@@ -44,5 +42,18 @@ class ApprovePengajuanController extends Controller
         $reimbursement->save();
 
         return response()->json(['success' => 'Data berhasil diapprove']);
+    }
+
+    public function reject(Request $request){
+        $reimbursement = Reimbursement::find($request->id);
+
+        if (!$reimbursement) {
+            return response()->json(['success' => false, 'message' => 'Data not found'], 404);
+        }
+
+        $reimbursement->status = 'rejected';
+        $reimbursement->save();
+
+        return response()->json(['success' => 'Data berhasil direject']);
     }
 }
