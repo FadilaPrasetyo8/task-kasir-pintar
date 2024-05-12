@@ -13,8 +13,12 @@ class RoleCheck
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, $userRole): Response
     {
-        return $next($request);
+        if(auth()->user()->role == $userRole){
+            return $next($request);
+        }
+
+          return response()->json(['You do not have permission to access for this page.']);
     }
 }

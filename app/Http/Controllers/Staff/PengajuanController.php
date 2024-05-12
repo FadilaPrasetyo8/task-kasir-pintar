@@ -5,10 +5,17 @@ namespace App\Http\Controllers\Staff;
 use App\Http\Controllers\Controller;
 use App\Models\Reimbursement;
 use Illuminate\Http\Request;
+use Illuminate\View\View as ViewView;
 
 class PengajuanController extends Controller
 {
-    public function index()
+
+    public function __construct()
+    {
+            $this->middleware('auth');
+    }
+
+    public function index(): ViewView
     {
         return view('staff.pengajuan-reimburse');
     }
